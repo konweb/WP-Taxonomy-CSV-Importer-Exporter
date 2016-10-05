@@ -1,6 +1,6 @@
 <?php
 class Tax_CSV_exporter {
-	public function export() {
+	public static function export() {
 		date_default_timezone_set('Asia/Tokyo');
 
 		global $wpdb;
@@ -32,7 +32,11 @@ class Tax_CSV_exporter {
 		foreach ( $terms as $term ) {
 			// カスタムフィールドの値を取得し、配列に追加
 			foreach ( $custom_field_keys['original'] as $field_key ) {
-				$term[] = get_field( $field_key, $tax_name . '_' .$term['term_id'] );
+				$field_val = get_field( $field_key, $tax_name . '_' .$term['term_id'] );
+				if ( is_array( $field_val ) ) {
+					$field_val = implode( ',', $field_val );
+				}
+				$term[] = $field_val;
 			}
 			$csv_data[] = array_values( $term );
 		}

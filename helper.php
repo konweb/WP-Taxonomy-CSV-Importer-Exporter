@@ -1,6 +1,10 @@
 <?php
 class Tax_CSV_helper {
-  public function get_acf_keys( $tax_name = 'category' ) {
+  public static function get_default_keys() {
+    return ['term_id', 'name', 'slug', 'term_group', 'term_order', 'term_taxonomy_id', 'taxonomy', 'description', 'parent', 'count'];
+  }
+
+  public static function get_acf_keys( $tax_name = 'category' ) {
     global $wpdb;
 
     $keys = [];
@@ -15,6 +19,14 @@ class Tax_CSV_helper {
         $keys['original'][]     = $split[count( $split ) -1];
         $keys['add_tax_name'][] = $tax_name . '_' . $split[count( $split ) -1];
       }
+
+      // 重複削除
+      $keys['original']     = array_unique( $keys['original'] );
+      $keys['add_tax_name'] = array_unique( $keys['add_tax_name'] );
+
+      // キーを再設定
+      $keys['original']     = array_values( $keys['original'] );
+      $keys['add_tax_name'] = array_values( $keys['add_tax_name'] );
     }
 
     return $keys;
