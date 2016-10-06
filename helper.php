@@ -5,7 +5,7 @@ class Tax_CSV_helper {
 	 * @return [type] [description]
 	 */
 	public static function get_default_keys() {
-		return ['term_id', 'name', 'slug', 'term_group', 'term_order', 'term_taxonomy_id', 'taxonomy', 'description', 'parent', 'count'];
+		return ['term_id', 'name', 'slug', 'term_order', 'taxonomy', 'description', 'parent'];
 	}
 
 	/**

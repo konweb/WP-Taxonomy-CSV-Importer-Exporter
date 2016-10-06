@@ -39,6 +39,7 @@ class Tax_CSV_exporter {
 		 * 最初の配列にフィールド名を格納
 		 */
 		unset( $terms[0]['count'] );
+		unset( $terms[0]['filter'] );
 		unset( $terms[0]['term_group'] );
 		unset( $terms[0]['term_taxonomy_id'] );
 		$csv_data[] = array_keys( $terms[0] );
@@ -48,8 +49,10 @@ class Tax_CSV_exporter {
 		 * @var [type]
 		 */
 		$custom_field_keys = Tax_CSV_helper::get_acf_keys( $tax_name );
-
-		$csv_data[0] = array_merge( $csv_data[0], $custom_field_keys['add_tax_name'] );
+		$has_acf           = count( $custom_field_keys['original'] ) > 0;
+		if ( $has_acf ) {
+			$csv_data[0] = array_merge( $csv_data[0], $custom_field_keys['add_tax_name'] );
+		}
 
 		/**
 		 * CSV用配列に格納
@@ -59,19 +62,34 @@ class Tax_CSV_exporter {
 			 * 不要な項目を削除
 			 */
 			unset( $term['count'] );
+			unset( $term['filter'] );
 			unset( $term['term_group'] );
 			unset( $term['term_taxonomy_id'] );
 
 			/**
 			 * カスタムフィールドの値を取得し、配列に追加
 			 */
-			foreach ( $custom_field_keys['original'] as $field_key ) {
-				$field_val = get_field( $field_key, $tax_name . '_' .$term['term_id'] );
-				if ( is_array( $field_val ) ) {
-					$field_val = implode( ',', $field_val );
+			if ( $has_acf ) {
+				foreach ( $custom_field_keys['original'] as $field_key ) {
+					$acf_object = get_field_object( $field_key, $tax_name . '_' .$term['term_id'] );
+					$field_val  = $acf_object['value'];
+					/**
+					 * 配列の場合「,」で区切る
+					 */
+					if ( is_array( $field_val ) ) {
+						$field_val = implode( ',', $field_val );
+					}
+					/**
+					 * 画像の場合IDを取得
+					 */
+					if ( $acf_object['type'] == 'image' ) {
+						$field_val = get_option( $tax_name . '_' .$term['term_id'] . '_' . $field_key );
+					}
+					
+					$term[] = $field_val;
 				}
-				$term[] = $field_val;
 			}
+
 			$csv_data[] = array_values( $term );
 		}
 
