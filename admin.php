@@ -33,7 +33,7 @@ class Tax_CSV_importer_exporter_admin {
     unset($taxs['post_format']);
     ?>
       <div class="wrap">
-        <?php if ( isset( $_GET['step'] ) && $_GET['step'] == 1 ) { ?>
+        <?php if ( isset( $_GET['tax_csv_import_submit'] ) && $_GET['tax_csv_import_submit'] == 1 ) { ?>
         <div id="message" class="updated notice notice-success is-dismissible below-h2"><p>インポートが完了しました。</p></div>
         <?php } ?>
         <h2><?php echo TAX_CSV_PLUGIN_NAME; ?></h2>
@@ -48,7 +48,7 @@ class Tax_CSV_importer_exporter_admin {
         </form>
 
         <h3>インポート</h3>
-        <?php wp_import_upload_form( add_query_arg('step', 1) ); ?>
+        <?php wp_import_upload_form( add_query_arg('tax_csv_import_submit', 1) ); ?>
       </div>
     <?php
   }

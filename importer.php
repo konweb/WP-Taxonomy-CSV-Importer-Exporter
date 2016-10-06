@@ -131,27 +131,25 @@ class Tax_CSV_importer {
 					 * 画像 insert
 					 * @var [type]
 					 */
-					if ( file_exists( $acf_value ) ) {
-						$filename       = $acf_value;
-						$filetype       = wp_check_filetype( basename( $filename ), null );
-						$wp_upload_dir  = wp_upload_dir();
-						$parent_post_id = 0;
-						$attachment     = array(
-							'guid'           => $wp_upload_dir['url'] . '/' . basename( $filename ),
-							'post_mime_type' => $filetype['type'],
-							'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
-							'post_content'   => '',
-							'post_status'    => 'inherit'
-						);
-						$attach_id = wp_insert_attachment( $attachment, $filename, $parent_post_id );
-						$acf_value = $attach_id;
+					$filename       = $acf_value;
+					$filetype       = wp_check_filetype( basename( $filename ), null );
+					$wp_upload_dir  = wp_upload_dir();
+					$parent_post_id = 0;
+					$attachment     = array(
+						'guid'           => $wp_upload_dir['url'] . '/' . basename( $filename ),
+						'post_mime_type' => $filetype['type'],
+						'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
+						'post_content'   => '',
+						'post_status'    => 'inherit'
+					);
+					$attach_id = wp_insert_attachment( $attachment, $filename, $parent_post_id );
+					$acf_value = $attach_id;
 
-						/**
-						 * 添付ファイルのメタデータを生成し、データベースを更新。
-						 */
-						$attach_data = wp_generate_attachment_metadata( $attach_id, $wp_upload_dir['path'] . '/' . basename( $filename ) );
-						wp_update_attachment_metadata( $attach_id, $attach_data );
-					}
+					/**
+					 * 添付ファイルのメタデータを生成し、データベースを更新。
+					 */
+					$attach_data = wp_generate_attachment_metadata( $attach_id, $wp_upload_dir['path'] . '/' . basename( $filename ) );
+					wp_update_attachment_metadata( $attach_id, $attach_data );
 				}
 
 				/**
