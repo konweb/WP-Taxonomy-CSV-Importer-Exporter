@@ -14,7 +14,7 @@ class Tax_CSV_importer_exporter_admin {
   /**
    * サブメニュー追加
    */
-  public function add_sub_menu() {
+  public static function add_sub_menu() {
     add_submenu_page('tools.php', TAX_CSV_PLUGIN_NAME, 'Taxonomy CSV', 'manage_options', 'tax-csv-importer-exporter', array( __CLASS__, 'admin_html' ) );
   }
 
@@ -25,7 +25,9 @@ class Tax_CSV_importer_exporter_admin {
   public function admin_html() {
     $taxs = get_taxonomies( '', 'objects' );
 
-    // 不要なタクソノミーを除外
+    /**
+     * 不要なタクソノミーを除外
+     */
     unset($taxs['nav_menu']);
     unset($taxs['link_category']);
     unset($taxs['post_format']);
@@ -39,7 +41,7 @@ class Tax_CSV_importer_exporter_admin {
             <option value="<?php echo $tax->name; ?>"><?php echo $tax->label; ?></option>
           <?php } ?>
           </select>
-          <p class="submit"><input type="submit" name="tax_csv_export_submit" id="submit" class="button" value="エクスポート"></p>
+          <p class="submit"><input type="submit" name="tax_csv_export_submit" id="submit" class="button" value="CSVエクスポート"></p>
         </form>
 
         <h3>インポート</h3>

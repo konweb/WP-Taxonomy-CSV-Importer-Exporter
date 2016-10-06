@@ -14,7 +14,9 @@ define('TAX_CSV_PLUGIN_NAME', 'Taxonomy CSV Importer & Exporter');
 define('TAX_CSV_PLUGIN_DIR' , plugin_dir_path(__FILE__));
 define('TAX_CSV_PLUGIN_URL' , plugin_dir_url(__FILE__));
 
-// Load Importer API
+/**
+ * Load Importer API
+ */
 require_once ABSPATH . 'wp-admin/includes/import.php';
 
 if ( !class_exists( 'WP_Importer' ) ) {
@@ -24,6 +26,9 @@ if ( !class_exists( 'WP_Importer' ) ) {
   }
 }
 
+/**
+ * load modules
+ */
 require TAX_CSV_PLUGIN_DIR . 'helper.php';
 require TAX_CSV_PLUGIN_DIR . 'admin.php';
 require TAX_CSV_PLUGIN_DIR . 'exporter.php';
@@ -45,17 +50,24 @@ class Tax_CSV_importer_exporter extends WP_Importer {
    * [init description]
    * @return [type] [description]
    */
-  public function init() {
-    // エクスポートがリクエストされた場合
+  public static function init() {
+    /**
+     * エクスポートがリクエストされた場合
+     */
     if ( isset( $_POST['tax_csv_export_submit'] ) ) {
       Tax_CSV_exporter::export();
       exit;
     }
 
-    // アップロードファイルの取得
+    /**
+     * アップロードファイルの取得
+     * @var [type]
+     */
     $get_files = wp_import_handle_upload();
 
-    // ファイルがアップロードされた場合
+    /**
+     * ファイルがアップロードされた場合
+     */
     if ( $get_files['file'] ) {
       Tax_CSV_importer::import( $get_files['file'] );
     }
