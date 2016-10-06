@@ -56,17 +56,11 @@ class Tax_CSV_importer {
 			$name       = $args['name'];
 
 			/**
-			 * 不要なキーを削除
-			 */
-			unset($args['term_id']);
-			unset($args['taxonomy']);
-			unset($args['name']);
-
-			/**
 			 * タクソノミーの追加・更新
 			 */
 			if ( empty( $id ) ) {
-				$id = wp_insert_term( $name, $tax, $args );
+				$insert = wp_insert_term( $name, $tax, $args );
+				$id     = $insert['term_id'];
 			} else {
 				wp_update_term( $id, $tax, $args );
 			}
