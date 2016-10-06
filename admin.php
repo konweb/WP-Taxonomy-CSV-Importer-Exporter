@@ -33,6 +33,9 @@ class Tax_CSV_importer_exporter_admin {
     unset($taxs['post_format']);
     ?>
       <div class="wrap">
+        <?php if ( isset( $_GET['step'] ) && $_GET['step'] == 1 ) { ?>
+        <div id="message" class="updated notice notice-success is-dismissible below-h2"><p>インポートが完了しました。</p></div>
+        <?php } ?>
         <h2><?php echo TAX_CSV_PLUGIN_NAME; ?></h2>
         <h3>エクスポート</h3>
         <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
