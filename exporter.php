@@ -38,6 +38,9 @@ class Tax_CSV_exporter {
 		/**
 		 * 最初の配列にフィールド名を格納
 		 */
+		unset( $terms[0]['count'] );
+		unset( $terms[0]['term_group'] );
+		unset( $terms[0]['term_taxonomy_id'] );
 		$csv_data[] = array_keys( $terms[0] );
 
 		/**
@@ -52,6 +55,13 @@ class Tax_CSV_exporter {
 		 * CSV用配列に格納
 		 */
 		foreach ( $terms as $term ) {
+			/**
+			 * 不要な項目を削除
+			 */
+			unset( $term['count'] );
+			unset( $term['term_group'] );
+			unset( $term['term_taxonomy_id'] );
+
 			/**
 			 * カスタムフィールドの値を取得し、配列に追加
 			 */
